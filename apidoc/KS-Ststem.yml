@@ -1,0 +1,567 @@
+openapi: 3.0.0
+info:
+  description: This is a KS-System Edu Project API created by samcn26@gmail.com
+  version: 0.0.1
+  title: KS-System Edu API
+  contact:
+    email: samcn26@gmail.com
+
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+servers:
+  - url: "localhost:3000/api"
+
+# Apply the security globally to all operations
+security:
+  - bearerAuth: []
+
+# tags are used for organizing operations
+tags:
+  - name: user
+    description: Operations about user
+  - name: project
+    description: Operations about project
+  - name: notification
+    description: Operations about notification
+  - name: log
+    description: The project modification log
+
+paths:
+  /user/login:
+    post:
+      tags:
+        - "user"
+      summary: "Logs user into the system"
+      operationId: loginUser
+      description: ""
+      requestBody:
+        description: User for login
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  description: The user name for login
+                  type: string
+                password:
+                  description: The password for login
+                  type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Token"
+        400:
+          description: Invalid password
+        404:
+          description: User not found
+  /user:
+    get:
+      tags:
+        - user
+      summary: Find all users order by user name ascending
+      operationId: getUserList
+      responses:
+        200:
+          description: successful operation
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+    post:
+      tags:
+        - user
+      summary: Register user
+      operationId: registerUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        400:
+          description: User existed               
+  /user/{userID}:
+    put:
+      tags:
+        - user
+      summary: Update user password or user info
+      description: Only admin user can update user name or operate the user form in the system
+      operationId: updateUser
+      parameters:
+      - name: userID
+        in: path
+        required: true
+        description: ID for user
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        400:
+          description: Invalid input
+          content: {}
+        404:
+          description: User not found
+          content: {} 
+    delete:
+      tags:
+      - user
+      summary: Delete user
+      operationId: deleteUser
+      parameters:
+      - name: userID
+        in: path
+        description: ID of the user
+        required: true
+        schema:
+          type: integer
+      responses:
+        400:
+          description: Invalid ID supplied
+          content: {}
+        404:
+          description: User not found
+          content: {}
+  /user/deleteUsers:
+    delete:
+      tags:
+      - user
+      summary: Delete users in bulk
+      operationId: batchDeleteUser
+
+      parameters:
+      - in: query
+        name: userIDs
+        schema:
+          type: array
+          items:
+            type: string
+
+      # open issue delete not support request body 
+      # https://github.com/swagger-api/swagger-ui/issues/4425
+
+      # requestBody:
+      #   content:
+      #     application/json:
+      #       schema:
+      #         type: array
+      #         items:
+      #           type: integer
+
+      responses:
+        400:
+          description: Invalid ID supplied
+          content: {}
+  
+  /project:
+    post:
+      tags:
+      - project
+      summary: Add a new project
+      operationId: addProject
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'              
+        400:
+          description: Invalid input
+    get:
+      tags:
+      - project
+      summary: Find all projects
+      operationId: getProjectList
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+  /project/{projectId}:
+    put:
+      tags:
+        - project
+      summary: Update project
+      operationId: updateProject
+      parameters:
+      - name: projectId
+        in: path
+        required: true
+        description: ID for project
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+      responses:
+        400:
+          description: Invalid input
+          content: {}
+        404:
+          description: Project not found
+          content: {}             
+    delete:
+      tags:
+      - project
+      summary: Delete project
+      operationId: deleteProject
+      parameters:
+      - name: projectId
+        in: path
+        description: ID of the project
+        required: true
+        schema:
+          type: integer
+      responses:
+        400:
+          description: Invalid ID supplied
+          content: {}
+        404:
+          description: User not found
+          content: {}              
+  /project/deleteProjects:
+      delete:
+        tags:
+        - project
+        summary: Delete projects in bulk
+        operationId: batchDeleteProject
+        parameters:
+          - in: query
+            name: projectIds
+            schema:
+              type: array
+              items:
+                type: string
+        responses:
+          400:
+            description: Invalid ID supplied
+            content: {}
+  /log/findByProject:
+    get:
+      tags:
+      - log
+      summary: Get project modification log
+      operationId: getLog
+      parameters:
+      - name: project_id 
+        in: query
+        required: true
+        description: Project id
+        schema:
+          type: integer 
+      - name: sortByTime 
+        in: query
+        required: true
+        description: |
+            Default is descending,
+            1: asending, -1: descending
+        schema:
+          type: integer
+          enum: [1,-1]
+          default: -1
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Log'
+        404:
+          description: Project not found
+          content: {}
+  /log:  
+    post:
+      tags:
+      - log
+      summary: Add a new modification history
+      operationId: addHistory
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Log'
+      responses:
+        200:
+          description: successful operation
+      deprecated: true
+  /notification:
+    get:
+      tags:
+      - notification
+      summary: Get notification by user ID(receiver_id)
+      description: Descending by 'action_time', delete_status is false
+      operationId: getNotification
+      parameters:
+      - name: receiver_id
+        in: query
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: successful operation
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'       
+    put:
+      tags:
+      - notification
+      summary: Update notification by read_status or delete_status
+      operationId: updateNotification
+      parameters:
+      - name: receiver_id
+        in: query
+        required: true
+        schema: 
+          type: integer
+      - name: log_id
+        in: query
+        required: true
+        schema: 
+          type: integer
+      - name: read_status
+        in: query
+        schema:
+          type: string
+      - name: delete_status
+        in: query
+        schema:
+          type: string
+      responses:
+        200:
+          description: successful operation
+  /notification/readAll:
+    put:
+      tags:
+      - notification
+      summary: Update all read_status to true
+      parameters:
+      - name: receiver_id
+        in: query
+        required: true
+        schema: 
+          type: integer
+      - name: log_id
+        in: query
+        required: true
+        schema: 
+          type: integer
+      responses:
+        200:
+          description: successful operation               
+  /notification/deleteAll:
+    put:
+      tags:
+        - notification
+      summary: Update all delete_status to true
+      parameters:
+      - name: receiver_id
+        in: query
+        required: true
+        schema: 
+          type: integer
+      - name: log_id
+        in: query
+        required: true
+        schema: 
+          type: integer  
+      responses:
+        200:
+          description: successful operation                          
+components:
+  schemas:
+    Token:
+      type: object
+      properties:
+        token:
+          type: string
+          example: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+    Approval_Status:
+      type: string
+      description: Current process approval status
+      enum:
+        - TODO
+        - NG
+        - OK
+      default: TODO
+    Action_Type:
+      type: string
+      description: |
+        Specified action for dealing with DB,
+      enum:
+        - CREATE
+        - UPDATE
+        - DELETE
+    User:
+      type: object
+      required:
+        - name
+        - email
+        - password
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          description: This email connect with Avatar
+          type: string
+        password:
+          type: string
+        admin:
+          type: boolean
+          default: false
+        note:
+          type: string
+    Project:
+      type: object
+      required:
+        - project_code
+      properties:
+        id:
+          type: integer
+        assignee:
+          $ref: "#/components/schemas/User"
+        project_code:
+          type: string
+        design_start:
+          type: string
+          format: date
+        design_end:
+          type: string
+          format: date
+        design_perc:
+          type: string
+          format: double
+        design_approval:
+          $ref: "#/components/schemas/Approval_Status"
+        coding_start:
+          type: string
+          format: date
+        coding_end:
+          type: string
+          format: date
+        coding_perc:
+          type: string
+          format: double
+        coding_approval:
+          $ref: "#/components/schemas/Approval_Status"
+        testing_start:
+          type: string
+          format: date
+        testing_end:
+          type: string
+          format: date
+        testing_perc:
+          type: string
+          format: double
+        testing_approval:
+          $ref: "#/components/schemas/Approval_Status"
+        release:
+          type: string
+          format: date
+    Log:
+      type: object
+      required:
+        - operator
+        - project_id
+        - action_type
+        - action_time
+      properties:
+        id:
+          type: integer
+        operator:
+          $ref: "#/components/schemas/User"
+        project_id:
+          $ref: "#/components/schemas/Project"
+        action_type:
+          $ref: "#/components/schemas/Action_Type"
+        action_time:
+          type: string
+          format: date-time
+        record:
+          type: string
+          description: |
+            compare all project columns, and concat each other, delimiter "|"
+            itemname,previous data, current data|...
+        receivers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Receiver'
+    Receiver:
+      type: object
+      properties:
+        receiver_id:
+          type: integer
+        receiver:
+          $ref: '#/components/schemas/User'
+        read_status:
+          type: boolean
+          default: false
+        delete_status:
+          type: boolean
+          default: false
+    Notification:
+      required:
+        - log_id
+        - receiver_id
+        - project_id
+      type: object
+      properties:
+        log_id:
+          type: integer
+        receiver_id:
+          type: integer
+        project_id:
+          type: integer
+        project_code:
+          type: string
+        operator_id:
+          type: integer
+        operator:
+          type: string
+        action_type:
+          $ref: "#/components/schemas/Action_Type"
+        action_time:
+          type: string
+          format: date-time          
+
+  securitySchemes:
+    bearerAuth: # arbitrary name for the security scheme
+      description: Return full user infor encrypted as token after successful login
+      type: http
+      scheme: bearer
+      bearerFormat: JWT # optional, arbitrary value for documentation purposes

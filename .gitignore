@@ -1,1 +1,4 @@
 .DS_Store
+.vscode
+edu
+node_modules
