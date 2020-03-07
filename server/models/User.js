@@ -18,7 +18,7 @@ const UserSchema = new Schema({
         type: String
     }
 }, {
-
+    
     // @edu versionKey: false, mongodb will not save __v field, otherwise the default __v: 0 will stored
     versionKey: false
 })

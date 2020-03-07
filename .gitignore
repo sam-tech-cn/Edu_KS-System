@@ -2,3 +2,4 @@
 .vscode
 edu
 node_modules
+coverage

@@ -1,2 +1,10 @@
 # Edu_KS-System
-UX, Node, Vue, Mongo, Swagger, Mocking data
+- UX 
+- NodeJS
+- Express
+- Mongoose
+- Vue 
+- MongoDB 
+- OpenAPI
+- Jest
+- Eslint

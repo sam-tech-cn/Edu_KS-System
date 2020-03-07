@@ -35,7 +35,6 @@ paths:
         - "user"
       summary: "Logs user into the system"
       operationId: loginUser
-      description: ""
       requestBody:
         description: User for login
         content:
@@ -146,7 +145,6 @@ paths:
       - user
       summary: Delete users in bulk
       operationId: batchDeleteUser
-
       parameters:
       - in: query
         name: userIDs
@@ -271,7 +269,7 @@ paths:
       tags:
       - log
       summary: Get project modification log
-      operationId: getLog
+      operationId: getLogList
       parameters:
       - name: project_id 
         in: query
@@ -347,6 +345,7 @@ paths:
         required: true
         schema: 
           type: integer
+          description: the object unique id
       - name: log_id
         in: query
         required: true
@@ -355,52 +354,37 @@ paths:
       - name: read_status
         in: query
         schema:
-          type: string
+          type: boolean
       - name: delete_status
         in: query
         schema:
-          type: string
+          type: boolean
       responses:
         200:
           description: successful operation
-  /notification/readAll:
+  /notification/updateAll:
     put:
       tags:
       - notification
-      summary: Update all read_status to true
+      summary: Update all read_status or delete_status to true
+      operationId: updateAll
       parameters:
       - name: receiver_id
         in: query
         required: true
         schema: 
           type: integer
-      - name: log_id
+      - name: read_status
         in: query
-        required: true
-        schema: 
-          type: integer
+        schema:
+          type: boolean
+      - name: delete_status
+        in: query
+        schema:
+          type: boolean
       responses:
         200:
-          description: successful operation               
-  /notification/deleteAll:
-    put:
-      tags:
-        - notification
-      summary: Update all delete_status to true
-      parameters:
-      - name: receiver_id
-        in: query
-        required: true
-        schema: 
-          type: integer
-      - name: log_id
-        in: query
-        required: true
-        schema: 
-          type: integer  
-      responses:
-        200:
-          description: successful operation                          
+          description: successful operation                     
 components:
   schemas:
     Token:
@@ -505,8 +489,14 @@ components:
           type: integer
         operator:
           $ref: "#/components/schemas/User"
+        operator_name:
+          type: string
+          description: for edge case (operator delelted) use only
         project_id:
           $ref: "#/components/schemas/Project"
+        project_code:
+          type: string
+          description: for edge case (project delelted) use only          
         action_type:
           $ref: "#/components/schemas/Action_Type"
         action_time:
@@ -526,6 +516,7 @@ components:
       properties:
         receiver_id:
           type: integer
+          description: the object unique id
         receiver:
           $ref: '#/components/schemas/User'
         read_status:
@@ -545,19 +536,24 @@ components:
           type: integer
         receiver_id:
           type: integer
+          description: the object unique id
         project_id:
           type: integer
         project_code:
           type: string
         operator_id:
           type: integer
-        operator:
+        operator_name:
           type: string
         action_type:
           $ref: "#/components/schemas/Action_Type"
         action_time:
           type: string
-          format: date-time          
+          format: date-time
+        read_status:
+          type: boolean
+        delete_status:
+          type: boolean       
 
   securitySchemes:
     bearerAuth: # arbitrary name for the security scheme

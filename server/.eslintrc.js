@@ -20,8 +20,7 @@ module.exports = {
             after: true
         }],
         'lines-around-comment': ['error', {
-            'beforeBlockComment': true,
-            'beforeLineComment': true,
+            'beforeBlockComment': true
         }],
         'line-comment-position': ['error', { 'position': 'above' }],
         'multiline-comment-style': ['error', 'starred-block'],

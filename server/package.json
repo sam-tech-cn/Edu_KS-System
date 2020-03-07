@@ -4,10 +4,16 @@
   "description": "API server of KS-System Edu project",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npm run lint && npm run jest",
+    "test:onebyone": "npm run test:utils && npm run test:userService && npm run test:projectService && && npm run test:notificationService",
+    "test:utils": "jest test/utils.test.js",
+    "test:userService": "jest test/user-service.test.js",
+    "test:projectService": "jest test/project-service.test.js",
+    "test:notificationService": "jest test/notification-service.test.js",
     "start": "node server.js",
     "server": "nodemon server.js",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "jest": "jest --coverage"
   },
   "author": "samcn26@gmail.com",
   "license": "ISC",
