@@ -97,51 +97,6 @@ describe('test notification service', () => {
             receiverObjId = oneNote.receiver_id
         })
 
-        test('can not find log via receiver id', async () => {
-            const updateFiled = {
-                read_status: true
-            }
-
-            // @edu declare many variables to same value
-            const fakeLogID = fakeReceiverObjId = testUtils.randomObjectId()
-            const result = await notificationService.updateNotification(fakeLogID, fakeReceiverObjId, updateFiled)
-            expect(result).toEqual(null)
-        })
-
-        test('update read status', async () => {
-            let updateFiled = {
-                read_status: true
-            }
-            //console.log(receiverObjId)
-            let result = await notificationService.updateNotification(log_id, receiverObjId, updateFiled)
-            let receiverObj = result.receivers.filter(x => x.receiver == receiver_id)
-
-            expect(receiverObj[0].read_status).toBe(true)
-
-            updateFiled = {
-                read_status: false
-            }
-            result = await notificationService.updateNotification(log_id, receiverObjId, updateFiled)
-            receiverObj = result.receivers.filter(x => x.receiver == receiver_id)
-            expect(receiverObj[0].read_status).toBe(false)
-        })
-
-        test('update delete status', async () => {
-            let updateFiled = {
-                delete_status: true
-            }
-            let result = await notificationService.updateNotification(log_id, receiverObjId, updateFiled)
-            let receiverObj = result.receivers.filter(x => x.receiver == receiver_id)
-            expect(receiverObj[0].delete_status).toBe(true)
-
-            updateFiled = {
-                delete_status: false
-            }
-            result = await notificationService.updateNotification(log_id, receiverObjId, updateFiled)
-            receiverObj = result.receivers.filter(x => x.receiver == receiver_id)
-            expect(receiverObj[0].delete_status).toBe(false)
-        })
-
         test('test update all false read status to true', async () => {
             // set all read status to false
             await Log.updateMany({ receiver: receiver_id, read_status: true }, { $set: { 'receivers.$.read_status': false } })
