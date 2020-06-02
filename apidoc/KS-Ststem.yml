@@ -203,7 +203,7 @@ paths:
         400:
           description: Invalid ID supplied
           content: {}
-  
+
   /project:
     post:
       tags:
@@ -315,7 +315,7 @@ paths:
         400:
           description: Invalid ID supplied
           content: {}
-  
+
   /log/findByProject:
     get:
       tags:
@@ -391,7 +391,7 @@ paths:
         200:
           description: successful operation
       deprecated: true
-  
+
   /notification:
     get:
       tags:
