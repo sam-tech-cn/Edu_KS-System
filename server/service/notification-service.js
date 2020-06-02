@@ -4,8 +4,8 @@ const Project = require('../models/Project')
 
 /**
  * Get notification by receiver with false delete status, order by action time descending
- * @param {*} id receiver id
- * @returns {*} empty array of notification
+ * @param {string} id receiver id
+ * @returns {Object[]} empty array of notification
  */
 exports.getNotification = async (id) => {
 
@@ -17,6 +17,8 @@ exports.getNotification = async (id) => {
             }
         }
     }).sort({ action_time: -1 })
+        .populate('operator', '_id name email admin')
+        .populate('project_id', '_id project_code')
 
     let notification = []
     if (logs.length > 0) {
@@ -68,43 +70,10 @@ exports.getNotification = async (id) => {
 }
 
 /**
- * Update notification by read_status or delete_status
- * @param {*} log_id 
- * @param {*} receiverObjId the receiver object unique id
- * @param {*} updateFiled update read_status or delete_status
- * @returns {*} null or updated log
- */
-exports.updateNotification = async (log_id, receiverObjId, updateFiled) => {
-    let updateContents = {}
-
-    // @edu check key in object
-    if (updateFiled.read_status != undefined) {
-        updateContents = {
-            'receivers.$.read_status': updateFiled.read_status
-        }
-    } else {
-        updateContents = {
-            'receivers.$.delete_status': updateFiled.delete_status
-        }
-    }
-
-    const result = await Log.findOneAndUpdate(
-        { '_id': log_id, 'receivers._id': receiverObjId },
-        { $set: updateContents },
-        { new: true })
-
-    if (!result) {
-        return null
-    } else {
-        return result
-    }
-}
-
-/**
  * Update all false read_status or delete_status to true
- * @param {*} id the receiver
- * @param {*} updateFiled update read_status or delete_status
- * @returns {*} updated log
+ * @param {string} id the receiver
+ * @param {Object} updateFiled update read_status or delete_status
+ * @returns {*} updated result
  */
 exports.updateAll = async (id, updateFiled) => {
     const match = {}
@@ -120,6 +89,33 @@ exports.updateAll = async (id, updateFiled) => {
         match.delete_status = false
         updateContents = {
             'receivers.$.delete_status': true
+        }
+    }
+
+    // update log
+    const result = await Log.updateMany({ receivers: { $elemMatch: match } }, { $set: updateContents })
+
+    return result
+}
+
+/**
+ * Update all read_status or delete_status by receiver objectId array
+ * @param {Object[]} ids the receiver objectId array
+ * @param {Object} updateFiled update read_status or delete_status
+ * @returns {*} updated result
+ */
+exports.updateAllByIds = async (ids, updateFiled) => {
+    const match = {}
+    match._id = { $in: ids }
+
+    let updateContents = {}
+    if (updateFiled.read_status != undefined) {
+        updateContents = {
+            'receivers.$.read_status': updateFiled.read_status
+        }
+    } else {
+        updateContents = {
+            'receivers.$.delete_status': updateFiled.delete_status
         }
     }
 

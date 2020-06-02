@@ -4,7 +4,6 @@ const testUtils = require('./test-utils')
 const utils = require('../utils/utils')
 const User = require('../models/User')
 
-// be aware that beforeEach, two users inserted.
 describe('test user service', () => {
     beforeAll(async () => {
         try {

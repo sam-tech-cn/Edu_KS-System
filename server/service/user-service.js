@@ -3,10 +3,10 @@ const utils = require('../utils/utils')
 
 /**
  * Logs user into the system
- * @param {*} name 
- * @param {*} password 
- * @param {*} expire token expiration
- * @returns {*} object with status code and message
+ * @param {string} name 
+ * @param {string} password 
+ * @param {string} expire token expiration
+ * @returns {Object} object with status code and message
  */
 exports.loginUser = async (name, password, expire = '12h') => {
     const user = await User.findOne({ 'name': name })
@@ -42,8 +42,8 @@ exports.loginUser = async (name, password, expire = '12h') => {
 
 /**
  * Register user
- * @param {*} user
- * @returns {*} object with status code and message
+ * @param {Object} user
+ * @returns {Object} object with status code and message
  */
 exports.registerUser = async (user) => {
     const returnUser = await User.find({ $or: [{ 'name': user.name }, { 'email': user.email }] })
@@ -64,10 +64,9 @@ exports.registerUser = async (user) => {
     }
 }
 
-
 /**
  * Find all users order by user name ascending
- * @returns {*} user list
+ * @returns {Object[]} user list
  */
 exports.getUserList = async () => {
 
@@ -76,10 +75,19 @@ exports.getUserList = async () => {
 }
 
 /**
+ * Find user by id
+ * @param {string} id 
+ * @returns {Object} user
+ */
+exports.getUser = async (id) => {
+    return User.findById(id)
+}
+
+/**
  * Update user by id
- * @param {*} id 
- * @param {*} obj update object 
- * @returns {*} updated user
+ * @param {string} id 
+ * @param {Object} obj update object 
+ * @returns {Object} updated user
  */
 exports.updateUser = async (id, obj) => {
     if (obj.password) {
@@ -91,20 +99,19 @@ exports.updateUser = async (id, obj) => {
 
 /**
  * Delete user
- * @param {*} id
- * @returns {*} user before deleted
+ * @param {string} id
+ * @returns {Object} user before deleted
  */
 exports.deleteUser = async (id) => {
     return User.findByIdAndDelete(id)
 }
 
 /**
- * Delete users in bulk
- * @param {*} ids user ids
- * @returns {null|*} null or delete result
+ * Delete users in batch
+ * @param {Object[]} ids user ids
+ * @returns {null|Object} null or delete result
  */
 exports.batchDeleteUser = async (ids) => {
-
     // the resolved object { n: 1, ok: 1, deletedCount: 1 }
     const users = await User.find({ _id: { $in: ids } })
     if (users.length <= 0 || users.length < ids.length) {
@@ -115,9 +122,18 @@ exports.batchDeleteUser = async (ids) => {
 }
 
 /**
+ * Update users as admin by ids
+ * @param {Object[]} ids user ids
+ * @returns {*} updated result
+ */
+exports.updateAllByIds = async (ids, updateFiled) => {
+    return User.updateMany({ _id: { $in: ids } }, { $set: updateFiled })
+}
+
+/**
  * Get receivers except system operator
- * @param {*} operator 
- * @returns {*} array with each item which contains receiver property
+ * @param {Object} operator 
+ * @returns {Object[]} array with each item which contains receiver property
  */
 exports.getReceivers = async (operator) => {
     const users = await User.find()

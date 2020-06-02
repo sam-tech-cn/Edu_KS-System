@@ -5,11 +5,9 @@ info:
   title: KS-System Edu API
   contact:
     email: samcn26@gmail.com
-
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-
 servers:
   - url: "localhost:3000/api"
 
@@ -68,12 +66,12 @@ paths:
       responses:
         200:
           description: successful operation
-          content: 
+          content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/User'
+                  $ref: "#/components/schemas/User"
     post:
       tags:
         - user
@@ -84,17 +82,33 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: "#/components/schemas/User"
       responses:
         200:
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: "#/components/schemas/User"
         400:
-          description: User existed               
-  /user/{userID}:
+          description: User existed
+  /user/{userId}:
+    get:
+      tags:
+        - user
+      summary: Get user by id
+      operationId: getUser
+      parameters:
+        - name: userId
+          in: path
+          description: ID of the user
+          required: true
+          schema:
+            type: integer
+      responses:
+        404:
+          description: User not found
+          content: {}
     put:
       tags:
         - user
@@ -102,36 +116,36 @@ paths:
       description: Only admin user can update user name or operate the user form in the system
       operationId: updateUser
       parameters:
-      - name: userID
-        in: path
-        required: true
-        description: ID for user
-        schema:
-          type: integer
+        - name: userId
+          in: path
+          required: true
+          description: ID for user
+          schema:
+            type: integer
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: "#/components/schemas/User"
       responses:
         400:
           description: Invalid input
           content: {}
         404:
           description: User not found
-          content: {} 
+          content: {}
     delete:
       tags:
-      - user
+        - user
       summary: Delete user
       operationId: deleteUser
       parameters:
-      - name: userID
-        in: path
-        description: ID of the user
-        required: true
-        schema:
-          type: integer
+        - name: userId
+          in: path
+          description: ID of the user
+          required: true
+          schema:
+            type: integer
       responses:
         400:
           description: Invalid ID supplied
@@ -139,21 +153,42 @@ paths:
         404:
           description: User not found
           content: {}
+  /user/updateAllByIds:
+    put:
+      tags:
+        - user
+      summary: Update users as admin by ids
+      operationId: updateAllUsersByIds
+      parameters:
+        - name: admin
+          in: query
+          schema:
+            type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+      responses:
+        200:
+          description: successful operation
   /user/deleteUsers:
     delete:
       tags:
-      - user
-      summary: Delete users in bulk
+        - user
+      summary: Batch delete users
       operationId: batchDeleteUser
       parameters:
-      - in: query
-        name: userIDs
-        schema:
-          type: array
-          items:
-            type: string
+        - in: query
+          name: userIds
+          schema:
+            type: array
+            items:
+              type: string
 
-      # open issue delete not support request body 
+      # open issue delete not support request body
       # https://github.com/swagger-api/swagger-ui/issues/4425
 
       # requestBody:
@@ -172,26 +207,26 @@ paths:
   /project:
     post:
       tags:
-      - project
+        - project
       summary: Add a new project
       operationId: addProject
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Project'
+              $ref: "#/components/schemas/Project"
       responses:
         200:
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Project'              
+                $ref: "#/components/schemas/Project"
         400:
           description: Invalid input
     get:
       tags:
-      - project
+        - project
       summary: Find all projects
       operationId: getProjectList
       responses:
@@ -202,91 +237,108 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Project'
+                  $ref: "#/components/schemas/Project"
   /project/{projectId}:
+    get:
+      tags:
+        - project
+      summary: Get project by id
+      operationId: getProject
+      parameters:
+        - name: projectId
+          in: path
+          description: ID of the prject
+          required: true
+          schema:
+            type: integer
+      responses:
+        404:
+          description: Project not found
+          content: {}
     put:
       tags:
         - project
       summary: Update project
       operationId: updateProject
       parameters:
-      - name: projectId
-        in: path
-        required: true
-        description: ID for project
-        schema:
-          type: integer
+        - name: projectId
+          in: path
+          required: true
+          description: ID for project
+          schema:
+            type: integer
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Project'
+              $ref: "#/components/schemas/Project"
       responses:
         400:
           description: Invalid input
           content: {}
         404:
           description: Project not found
-          content: {}             
+          content: {}
     delete:
       tags:
-      - project
+        - project
       summary: Delete project
       operationId: deleteProject
       parameters:
-      - name: projectId
-        in: path
-        description: ID of the project
-        required: true
-        schema:
-          type: integer
+        - name: projectId
+          in: path
+          description: ID of the project
+          required: true
+          schema:
+            type: integer
       responses:
         400:
           description: Invalid ID supplied
           content: {}
         404:
           description: User not found
-          content: {}              
+          content: {}
   /project/deleteProjects:
-      delete:
-        tags:
+    delete:
+      tags:
         - project
-        summary: Delete projects in bulk
-        operationId: batchDeleteProject
-        parameters:
-          - in: query
-            name: projectIds
-            schema:
-              type: array
-              items:
-                type: string
-        responses:
-          400:
-            description: Invalid ID supplied
-            content: {}
+      summary: Batch delete projects
+      operationId: batchDeleteProject
+      parameters:
+        - in: query
+          name: projectIds
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        400:
+          description: Invalid ID supplied
+          content: {}
+  
   /log/findByProject:
     get:
       tags:
-      - log
+        - log
       summary: Get project modification log
       operationId: getLogList
       parameters:
-      - name: project_id 
-        in: query
-        required: true
-        description: Project id
-        schema:
-          type: integer 
-      - name: sortByTime 
-        in: query
-        required: true
-        description: |
+        - name: project_id
+          in: query
+          required: true
+          description: Project id
+          schema:
+            type: integer
+        - name: sortByTime
+          in: query
+          required: true
+          description: |
             Default is descending,
             1: asending, -1: descending
-        schema:
-          type: integer
-          enum: [1,-1]
-          default: -1
+          schema:
+            type: integer
+            enum: [1, -1]
+            default: -1
       responses:
         200:
           description: successful operation
@@ -295,96 +347,120 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Log'
+                  $ref: "#/components/schemas/Log"
         404:
           description: Project not found
           content: {}
-  /log:  
+  /log/findByIds:
     post:
       tags:
-      - log
+        - log
+      summary: Get logs by ids
+      operationId: getLogByIds
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Log"
+        404:
+          description: Project not found
+          content: {}
+  /log:
+    post:
+      tags:
+        - log
       summary: Add a new modification history
       operationId: addHistory
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Log'
+              $ref: "#/components/schemas/Log"
       responses:
         200:
           description: successful operation
       deprecated: true
+  
   /notification:
     get:
       tags:
-      - notification
-      summary: Get notification by user ID(receiver_id)
+        - notification
+      summary: Get notification by user id
       description: Descending by 'action_time', delete_status is false
       operationId: getNotification
       parameters:
-      - name: receiver_id
-        in: query
-        required: true
-        schema:
-          type: integer
+        - name: userId
+          in: query
+          required: true
+          schema:
+            type: integer
       responses:
         200:
           description: successful operation
-          content: 
+          content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Notification'       
-    put:
-      tags:
-      - notification
-      summary: Update notification by read_status or delete_status
-      operationId: updateNotification
-      parameters:
-      - name: receiver_id
-        in: query
-        required: true
-        schema: 
-          type: integer
-          description: the object unique id
-      - name: log_id
-        in: query
-        required: true
-        schema: 
-          type: integer
-      - name: read_status
-        in: query
-        schema:
-          type: boolean
-      - name: delete_status
-        in: query
-        schema:
-          type: boolean
-      responses:
-        200:
-          description: successful operation
+                $ref: "#/components/schemas/Notification"
   /notification/updateAll:
     put:
       tags:
-      - notification
+        - notification
       summary: Update all read_status or delete_status to true
       operationId: updateAll
       parameters:
-      - name: receiver_id
-        in: query
-        required: true
-        schema: 
-          type: integer
-      - name: read_status
-        in: query
-        schema:
-          type: boolean
-      - name: delete_status
-        in: query
-        schema:
-          type: boolean
+        - name: userId
+          in: query
+          required: true
+          schema:
+            type: integer
+        - name: read_status
+          in: query
+          schema:
+            type: boolean
+        - name: delete_status
+          in: query
+          schema:
+            type: boolean
       responses:
         200:
-          description: successful operation                     
+          description: successful operation
+  /notification/updateAllByIds:
+    put:
+      tags:
+        - notification
+      summary: Update all read_status or delete_status by receiver objectIds
+      operationId: updateAllAlersByIds
+      parameters:
+        - name: read_status
+          in: query
+          schema:
+            type: boolean
+        - name: delete_status
+          in: query
+          schema:
+            type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+      responses:
+        200:
+          description: successful operation
+
 components:
   schemas:
     Token:
@@ -403,8 +479,7 @@ components:
       default: TODO
     Action_Type:
       type: string
-      description: |
-        Specified action for dealing with DB,
+      description: Specified action for dealing with DB
       enum:
         - CREATE
         - UPDATE
@@ -496,7 +571,7 @@ components:
           $ref: "#/components/schemas/Project"
         project_code:
           type: string
-          description: for edge case (project delelted) use only          
+          description: for edge case (project delelted) use only
         action_type:
           $ref: "#/components/schemas/Action_Type"
         action_time:
@@ -510,7 +585,7 @@ components:
         receivers:
           type: array
           items:
-            $ref: '#/components/schemas/Receiver'
+            $ref: "#/components/schemas/Receiver"
     Receiver:
       type: object
       properties:
@@ -518,7 +593,7 @@ components:
           type: integer
           description: the object unique id
         receiver:
-          $ref: '#/components/schemas/User'
+          $ref: "#/components/schemas/User"
         read_status:
           type: boolean
           default: false
@@ -542,7 +617,7 @@ components:
         project_code:
           type: string
         operator_id:
-          type: integer
+          $ref: "#/components/schemas/User"
         operator_name:
           type: string
         action_type:
@@ -553,7 +628,7 @@ components:
         read_status:
           type: boolean
         delete_status:
-          type: boolean       
+          type: boolean
 
   securitySchemes:
     bearerAuth: # arbitrary name for the security scheme

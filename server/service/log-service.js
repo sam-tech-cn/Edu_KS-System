@@ -19,8 +19,8 @@ const project_item = {
 
 /**
  * Save log, for single operation
- * @param {*} log
- * @returns {*} saved log
+ * @param {Object} log
+ * @returns {Object[]} saved log
  */
 exports.saveLog = async (log) => {
     return new Log(log).save()
@@ -28,37 +28,49 @@ exports.saveLog = async (log) => {
 
 /**
  * Save logs, for batch operations
- * @param {*} logs the array of logs
- * @returns {*} saved logs
+ * @param {Object[]} logs the array of logs
+ * @returns {Object[]} saved logs
  */
 exports.saveManyLogs = async (logs) => {
     return Log.insertMany(logs)
 }
 
 /**
- * Get project modification logs by project_id 
- * order by action_time descending
- * @param {*} id project id
- * @param {*} sortType default is descending, 1: asending, -1: descending
- * @returns {*} project list
+ * Get project modification logs by project_id  order by action_time descending
+ * @param {string} id project id
+ * @param {string} sortType default is descending, 1: asending, -1: descending
+ * @returns {Object[]} project list
  */
 exports.getLogList = async (id, sortType) => {
-    return Log.find({ project_id: id }).sort({ action_time: sortType })
+    return Log.find({ project_id: id })
+        .sort({ action_time: sortType })
+        .populate('operator', '_id name email admin')
 }
 
 /**
- * Make record with specified pattern (<item name>|<old value>|<new value>) sepearted by ','
- * @param {*} oldPrj must be stringified
- * @param {*} newPrj must be stringified
- * @returns {*} empty string or record string with specified pattern as bove introduced
+ * Get logs by log ids
+ * @param {Object[]} ids log ids
+ * @param {number} sortType default is descending, 1: asending, -1: descending
+ */
+exports.getLogByIds = async (ids, sortType) => {
+    return Log.find({
+        _id: { $in: ids }
+    }).sort({action_time: sortType})
+}
+
+/**
+ * Make record with specified pattern (<item name>|<old value>|<new value>) separated by ','
+ * @param {Object} oldPrj must be stringified in process
+ * @param {Object} newPrj must be stringified in process
+ * @returns {String} empty string or record string with specified pattern as bove introduced
  */
 exports.makeRecord = (oldPrj, newPrj, item = project_item) => {
     const recordArr = []
-    const formatedOld = JSON.parse(JSON.stringify(oldPrj))
-    const formatedNew = JSON.parse(JSON.stringify(newPrj))
-    Object.keys(formatedOld).forEach(key => {
-        if ( (key in formatedNew) && formatedOld[key] != formatedNew[key]) {
-            recordArr.push(item[key] + '|' + formatedOld[key] + '|' + formatedNew[key])
+    const formattedOld = JSON.parse(JSON.stringify(oldPrj))
+    const formattedNew = JSON.parse(JSON.stringify(newPrj))
+    Object.keys(formattedOld).forEach(key => {
+        if ((key in formattedNew) && formattedOld[key] != formattedNew[key]) {
+            recordArr.push(item[key] + '|' + formattedOld[key] + '|' + formattedNew[key])
         }
     })
     if (recordArr.length > 0) {

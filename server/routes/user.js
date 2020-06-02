@@ -51,6 +51,39 @@ router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => 
 })
 
 /**
+ * Update users as admin by ids
+ * @route PUT api/user/updateAllByIds
+ */
+router.put('/updateAllByIds', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+        const ids = req.body
+        const updateFiled = {
+            admin: req.query.admin,
+        }
+        const result = await userService.updateAllByIds(ids, updateFiled)
+        res.status(200).json(result)
+    } catch (error) {
+        res.status(500).json(error)
+    }
+})
+
+/**
+ * Get user by id
+ * @router GET api/user/{userID}
+ */
+router.get('/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    userService.getUser(req.params.id).then(doc => {
+        if (!doc) {
+            res.status(404).json('User not found')
+        } else {
+            res.status(200).json(doc)
+        }
+    }).catch(err => {
+        res.status(500).json(err)
+    })
+})
+
+/**
  * Update user
  * @router PUT api/user/{userID}
  */
@@ -68,20 +101,20 @@ router.put('/:id', passport.authenticate('jwt', { session: false }), async (req,
 })
 
 /**
- * Delete user in bulk
+ * Batch delete users
  * @router DELETE api/deleteUsers
  */
 router.delete('/deleteUsers', passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
-        const result = await userService.batchDeleteUser(req.body)
-        
+        const result = await userService.batchDeleteUser(req.query.userIds)
+
         if (!result) {
             res.status(404).json('Users not found')
-        }else{
+        } else {
             res.status(200).json('successful operation')
         }
     } catch (error) {
-        res.json(500).json(error) 
+        res.json(500).json(error)
     }
 })
 

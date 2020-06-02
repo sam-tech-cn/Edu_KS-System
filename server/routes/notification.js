@@ -19,37 +19,6 @@ router.get('/', passport.authenticate('jwt', { session: false }), async (req, re
 })
 
 /**
- * Update notification by read_status or delete_status
- * @route PUT api/notification
- */
-router.put('/', passport.authenticate('jwt', { session: false }), async (req, res) => {
-    try {       
-        
-        // actually one of below params must be specified
-        const updateFiled = {}
-        updateFiled.read_status = req.query.read_status
-        updateFiled.delete_status = req.query.delete_status
-        const log_id = req.query.log_id
-        const receiverObjectId = req.query.receiver_id
-
-        if ((updateFiled.read_status == undefined && updateFiled.delete_status == undefined)
-            || (!log_id && !receiverObjectId)) {
-            return res.status(400).json('Invalid input')
-        }
-
-        const result = await notificationService.updateNotification(log_id, receiverObjectId, updateFiled)
-
-        if (!result) {
-            res.status(404).json(result)
-        } else {
-            res.status(200).json(result)
-        }
-    } catch (error) {
-        res.status(500).json(error)
-    }
-})
-
-/**
  * Update all read_status or delete_status to true
  * @route PUT api/notification/updateAll
  */
@@ -68,5 +37,22 @@ router.put('/updateAll', passport.authenticate('jwt', { session: false }), async
     }
 })
 
+/**
+ * Update all read_status or delete_status by receiver objectIds
+ * @route PUT api/notification/updateAllByIds
+ */
+router.put('/updateAllByIds', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+        const ids = req.body
+        const updateFiled = {
+            read_status: req.query.read_status,
+            delete_status: req.query.delete_status
+        }
+        const result = await notificationService.updateAllByIds(ids, updateFiled)
+        res.status(200).json(result)
+    } catch (error) {
+        res.status(500).json(error)
+    }
+})
 
 module.exports = router

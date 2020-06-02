@@ -87,6 +87,11 @@ describe('test log service', () => {
         }))
         const logs = await logService.getLogList(project.id, -1)
 
+        // we only extract "_id" for operator to check
+        for(i=0; i< logs.length; i++){
+            logs[i].operator = logs[i].operator['_id']
+        }
+
         // sort checLogs descending @edu .sort((a,b)=>number) if number > 1 desc, -1 asc, 0 remain 
         checkLogs.sort((a, b) => b.action_time - a.action_time)
         expect(JSON.parse(JSON.stringify(logs))).toMatchObject(JSON.parse(JSON.stringify(checkLogs)))

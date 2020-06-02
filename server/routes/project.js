@@ -64,12 +64,12 @@ router.put('/:id', passport.authenticate('jwt', { session: false }), async (req,
 })
 
 /**
- * Delete project in bulk
+ * Batch delete projects
  * @router DELETE api/deleteProjects
  */
 router.delete('/deleteProjects', passport.authenticate('jwt', { session: false }), async (req, res) => {
   const operator = req.user
-  const logs = await projectService.batchDeleteProject(req.body, operator)
+  const logs = await projectService.batchDeleteProject(req.query.projectIds, operator)
 
   if (!logs) {
     res.status(404).json('Projects not found')
@@ -78,6 +78,22 @@ router.delete('/deleteProjects', passport.authenticate('jwt', { session: false }
     res.status(200).json(result)
   }
 
+})
+
+/**
+ * Get project by id
+ * @router GET api/project/{projectID}
+ */
+router.get('/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  projectService.getProject(req.params.id).then(doc => {
+      if (!doc) {
+          res.status(404).json('Project not found')
+      } else {
+          res.status(200).json(doc)
+      }
+  }).catch(err => {
+      res.status(500).json(err)
+  })
 })
 
 /**
@@ -102,6 +118,5 @@ router.delete('/:id', passport.authenticate('jwt', { session: false }), async (r
     res.status(500).json(error)
   }
 })
-
 
 module.exports = router

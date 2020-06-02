@@ -10,9 +10,9 @@ const action_type = {
 
 /**
  * Add a new project
- * @param {*} operator system operator
- * @param {*} project project to save
- * @returns {*} log
+ * @param {Object} operator system operator
+ * @param {Object} project project to save
+ * @returns {Object} log
  */
 exports.addProject = async (operator, project) => {
     const savedPrj = await new Project(project).save()
@@ -31,7 +31,7 @@ exports.addProject = async (operator, project) => {
 
 /**
  * Find all projects order by project_code ascending
- * @returns {*} project list
+ * @returns {Object[]} project list
  */
 exports.getProjectList = async () => {
     return Project.find()
@@ -42,10 +42,10 @@ exports.getProjectList = async () => {
 
 /**
  * Update project by id
- * @param {*} id project id
- * @param {*} operator system operator
- * @param {*} obj get from operator input
- * @returns {null|object} null or log
+ * @param {string} id project id
+ * @param {Object} operator system operator
+ * @param {Object} obj get from operator input
+ * @returns {null|Object} null or log
  */
 exports.updateProject = async (id, operator, obj) => {
     const oldPrj = await Project.findOneAndUpdate({ _id: id }, obj, { new: false })
@@ -72,9 +72,9 @@ exports.updateProject = async (id, operator, obj) => {
 
 /**
  * Delete project by id
- * @param {*} id project id
- * @param {*} operator system operator
- * @returns {null|*} null or log
+ * @param {string} id project id
+ * @param {Object} operator system operator
+ * @returns {null|Object} null or log
  */
 exports.deleteProject = async (id, operator) => {
     const oldPrj = await Project.findByIdAndDelete(id)
@@ -98,9 +98,9 @@ exports.deleteProject = async (id, operator) => {
 
 /**
  * Batch delete projects
- * @param {string[]} ids  project ids
- * @param {*} operator system operator
- * @returns {null|*} null or array of logs
+ * @param {Object[]} ids  project ids
+ * @param {Object} operator system operator
+ * @returns {null|Object} null or array of logs
  */
 exports.batchDeleteProject = async (ids, operator) => {
     const projects = await Project.find({ _id: { $in: ids } })
@@ -124,4 +124,13 @@ exports.batchDeleteProject = async (ids, operator) => {
         }
     })
     return logs
+}
+
+/**
+ * Find project by id
+ * @param {string} id 
+ * @returns {Object} project
+ */
+exports.getProject = async (id) => {
+    return Project.findById(id)
 }
