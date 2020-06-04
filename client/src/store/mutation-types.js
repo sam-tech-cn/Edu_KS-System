@@ -1,0 +1,4 @@
+export const SET_USERINFO = 'SET_USERINFO'
+export const SET_TOKEN = 'SET_TOKEN'
+export const PURGE_AUTH = 'PURGE_AUTH'
+export const SET_SIDEBARSTATUS = 'SET_SIDEBARSTATUS'

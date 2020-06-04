@@ -1,0 +1,37 @@
+html,
+body,
+#app {
+  width: 100%;
+  height: 100%;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+ }
+
+.user-avatar {
+  border-radius: 50%;
+  box-shadow: 0px 0px 2px;
+  width: 30px;
+  height: 30px;
+}
+
+.app-main{
+  padding: 40px;
+  height: calc(100vh - 45px);
+}
+
+// element ui progress in Project menu
+.el-progress__text {
+  font-size: 13px !important;
+}
