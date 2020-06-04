@@ -62,7 +62,7 @@ exports.getLogByIds = async (ids, sortType) => {
  * Make record with specified pattern (<item name>|<old value>|<new value>) separated by ','
  * @param {Object} oldPrj must be stringified in process
  * @param {Object} newPrj must be stringified in process
- * @returns {String} empty string or record string with specified pattern as bove introduced
+ * @returns {string} empty string or record string with specified pattern as bove introduced
  */
 exports.makeRecord = (oldPrj, newPrj, item = project_item) => {
     const recordArr = []

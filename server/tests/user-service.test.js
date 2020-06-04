@@ -1,4 +1,3 @@
-const mongoose = require('mongoose')
 const userService = require('../service/user-service')
 const testUtils = require('./test-utils')
 const utils = require('../utils/utils')
@@ -10,7 +9,7 @@ describe('test user service', () => {
             await testUtils.connectMongo('test-' + testUtils.randomString())
             await testUtils.dropDatabase()
         } catch (error) {
-            console.error(err)
+            console.error(error)
         }
     })
 
@@ -23,7 +22,7 @@ describe('test user service', () => {
         // }
         await User.collection.drop()
         await testUtils.disconnectMongo()
-    });
+    })
 
     describe('test user login', () => {
         const users = Array.from({ length: 5 }, () => testUtils.randomUser())
@@ -118,7 +117,7 @@ describe('test user service', () => {
 
         const updateUser = await userService.updateUser(savedUser.id, modifiedUser)
         expect(JSON.parse(JSON.stringify(updateUser))).toMatchObject(JSON.parse(JSON.stringify(modifiedUser)))
-        
+
         // check if password encrypted 
         expect(updateUser.password).not.toEqual('modify')
 

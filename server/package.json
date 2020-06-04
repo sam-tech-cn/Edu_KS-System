@@ -4,12 +4,12 @@
   "description": "API server of KS-System Edu project",
   "main": "server.js",
   "scripts": {
-    "test": "npm run lint && npm run jest",
+    "test": "npm run lint && jest .",
     "test:onebyone": "npm run test:utils && npm run test:userService && npm run test:projectService && && npm run test:notificationService",
-    "test:utils": "jest test/utils.test.js",
-    "test:userService": "jest test/user-service.test.js",
-    "test:projectService": "jest test/project-service.test.js",
-    "test:notificationService": "jest test/notification-service.test.js",
+    "test:utils": "jest tests/utils.test.js",
+    "test:userService": "jest tests/user-service.test.js",
+    "test:projectService": "jest tests/project-service.test.js",
+    "test:notificationService": "jest tests/notification-service.test.js",
     "start": "node server.js",
     "server": "nodemon server.js",
     "lint": "eslint .",
@@ -27,6 +27,7 @@
     "passport-jwt": "^4.0.0"
   },
   "devDependencies": {
-    "eslint": "^6.8.0"
+    "eslint": "^6.8.0",
+    "eslint-plugin-jest": "^23.13.2"
   }
 }

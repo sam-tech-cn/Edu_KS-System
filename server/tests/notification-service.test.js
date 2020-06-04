@@ -73,9 +73,7 @@ describe('test notification service', () => {
     })
 
     describe('test update notification', () => {
-        let log_id
         let receiver_id
-        let receiverObjId
         beforeAll(async () => {
             const operator = await new User(testUtils.randomUser()).save()
             const userIDs = (await User.find()).map(x => x.id)
@@ -90,11 +88,6 @@ describe('test notification service', () => {
                 const log = await projectService.updateProject(project.id, operator, updateProject)
                 await new Log(log).save()
             }))
-
-            const notification = await notificationService.getNotification(receiver_id)
-            const oneNote = testUtils.randomArr(notification)
-            log_id = oneNote.log_id
-            receiverObjId = oneNote.receiver_id
         })
 
         test('test update all false read status to true', async () => {

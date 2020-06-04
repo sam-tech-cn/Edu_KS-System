@@ -26,10 +26,27 @@ module.exports = {
         'multiline-comment-style': ['error', 'starred-block'],
         'spaced-comment': ['error', 'always'],
     },
-    overrides: [{
-        files: ['server.js'],
-        rules: {
-            'no-console': 0
-        }
-    }]
+    overrides: [
+        {
+            files: ['server.js'],
+            rules: {
+                'no-console': "off"
+            }
+        }, {
+            files: [
+                "**/*.test.js"
+            ],
+            env: {
+                jest: true
+            },
+            plugins: ["jest"],
+            rules: {
+                "jest/no-disabled-tests": "warn",
+                "jest/no-focused-tests": "error",
+                "jest/no-identical-title": "error",
+                "jest/valid-expect": "error",
+                'no-console': "off",
+                "multiline-comment-style": "off",
+            }
+        }]
 }

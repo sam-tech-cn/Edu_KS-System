@@ -88,7 +88,7 @@ describe('test log service', () => {
         const logs = await logService.getLogList(project.id, -1)
 
         // we only extract "_id" for operator to check
-        for(i=0; i< logs.length; i++){
+        for(let i=0; i< logs.length; i++){
             logs[i].operator = logs[i].operator['_id']
         }
 
