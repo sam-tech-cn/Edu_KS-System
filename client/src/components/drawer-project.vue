@@ -10,7 +10,6 @@
         />
         <img @click="handleClose" src="@/assets/close.svg" class="icon-header close" />
       </div>
-      <!-- @tab-click="handleClick" -->
       <div class="tabs">
         <el-tabs v-model="drawer.activeName">
           <el-tab-pane
@@ -283,26 +282,6 @@ export default {
         this.$refs["form"].clearValidate();
       }
     },
-    initForm: function() {
-      this.form = {
-        _id: "",
-        assignee: "",
-        project_code: "",
-        design_perc: 0,
-        design_start: "",
-        design_end: "",
-        design_approval: "TODO",
-        coding_perc: 0,
-        coding_start: "",
-        coding_end: "",
-        coding_approval: "TODO",
-        testing_perc: 0,
-        testing_start: "",
-        testing_end: "",
-        testing_approval: "TODO",
-        release: ""
-      };
-    },
     getUsers: function() {
       this.$axios.get("api/user").then(res => {
         this.users = res.data;
@@ -311,10 +290,7 @@ export default {
     handleClose: function() {
       this.drawer.show = false;
     },
-    /*
-     * handleClick: function() {}
-     * the time pattern <yyyy-mm-dd> in the timeline
-     */
+    // the time pattern <yyyy-mm-dd> in the timeline
     fmtTime1: function(val) {
       const { action_time } = val;
       const time = new Date(action_time);
