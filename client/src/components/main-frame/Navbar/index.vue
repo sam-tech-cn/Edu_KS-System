@@ -20,7 +20,7 @@
           </div>
 
           <div class="alert-container">
-            <!-- aliert items we grouped by project code here img only show the last modified -->
+            <!-- aliert items we grouped by project code here and only show the lastest modification -->
             <div v-if="notifications.length>0">
               <alert-item
                 @refresh="refresh"
@@ -117,7 +117,7 @@ export default {
         const notifications = [];
         if (rawData.length > 0) {
           /**
-           * format raw data (constructue refer API doc )
+           * format raw data (constructure refer to the API doc )
            * 1. group by project code (Prioritize use it from project object, otherwise use backup data)
            * 2. sort each group data by action_time descending
            * 3. format to [{project_code:'',alerts:[]}] also sort by each item's latest action_time
