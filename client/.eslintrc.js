@@ -25,13 +25,6 @@ module.exports = {
       env: {
         jest: true
       }
-    },
-    {
-      files: ['**/*.test.js'],
-      rules: {
-        'no-console': 'off',
-        'no-undef': 'off',
-      }
     }
   ]
 }

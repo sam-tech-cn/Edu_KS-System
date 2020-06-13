@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const testMongoURI = 'mongodb://localhost:27017/'
+const testMongoURI = process.env.MONGODB_URI ? process.env.MONGODB_URI : 'mongodb://localhost:27017/'
 
 module.exports = {
     testMongoURI: testMongoURI,

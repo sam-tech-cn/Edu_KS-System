@@ -1,0 +1,33 @@
+version: "3"
+services:
+  mongo:
+    image: mongo:latest
+    environment: 
+      MONGO_INITDB_DATABASE: ks-system
+    volumes:
+      - ./script/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+      - ks-db:/data/db
+    networks:
+      - backend
+  api:
+    build: ./server
+    networks:
+      - backend
+      - frontend    
+    depends_on:
+      - mongo
+    environment:
+      MONGODB_URI: mongodb://mongo:27017/ks-system
+  client:
+    build: ./client
+    depends_on:
+      - api
+    ports:
+      - 9999:80
+    networks:
+      - frontend
+volumes:
+  ks-db:
+networks:
+  backend:
+  frontend:
