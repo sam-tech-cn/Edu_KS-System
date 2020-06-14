@@ -20,7 +20,7 @@
           <el-input v-model="registerForm.password" type="password" size="medium"></el-input>
         </el-form-item>
 
-        <el-form-item label="Confirm" prop="confirm">
+        <el-form-item label="Confirm" prop="confirmPass">
           <el-input @keyup.enter.native.prevent="submitForm('registerForm')" v-model="registerForm.confirmPass" type="password" size="medium"></el-input>
         </el-form-item>
 
