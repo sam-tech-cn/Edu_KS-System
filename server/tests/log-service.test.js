@@ -92,7 +92,7 @@ describe('test log service', () => {
             logs[i].operator = logs[i].operator['_id']
         }
 
-        // sort checLogs descending @edu .sort((a,b)=>number) if number > 1 desc, -1 asc, 0 remain 
+        // sort checkLogs descending @edu .sort((a,b)=>number) if number > 1 desc, -1 asc, 0 remain 
         checkLogs.sort((a, b) => b.action_time - a.action_time)
         expect(JSON.parse(JSON.stringify(logs))).toMatchObject(JSON.parse(JSON.stringify(checkLogs)))
 

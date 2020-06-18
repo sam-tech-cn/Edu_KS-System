@@ -20,7 +20,7 @@ const LogSchema = new Schema({
         type: Schema.Types.ObjectId, ref: 'User'
     },
 
-    // for edge case (operator delelted) use only
+    // for edge case (operator deleted) use only
     operator_name: {
         type: String
     },
@@ -28,7 +28,7 @@ const LogSchema = new Schema({
         type: Schema.Types.ObjectId, ref: 'Project'
     },
     
-    // for edge case (project delelted) use only
+    // for edge case (project deleted) use only
     project_code:{
         type: String
     },

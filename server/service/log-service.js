@@ -3,7 +3,7 @@ const project_item = {
     'assignee': 'Assignee',
     'project_code': 'Project Code',
     'design_start': 'Design Start Time',
-    'design_end': 'Degign End Time',
+    'design_end': 'Design End Time',
     'design_perc': 'Design Complete',
     'design_approval': 'Design Approval',
     'coding_start': 'Coding Start Time',
@@ -38,7 +38,7 @@ exports.saveManyLogs = async (logs) => {
 /**
  * Get project modification logs by project_id  order by action_time descending
  * @param {string} id project id
- * @param {string} sortType default is descending, 1: asending, -1: descending
+ * @param {string} sortType default is descending, 1: ascending, -1: descending
  * @returns {Object[]} project list
  */
 exports.getLogList = async (id, sortType) => {
@@ -50,7 +50,7 @@ exports.getLogList = async (id, sortType) => {
 /**
  * Get logs by log ids
  * @param {Object[]} ids log ids
- * @param {number} sortType default is descending, 1: asending, -1: descending
+ * @param {number} sortType default is descending, 1: ascending, -1: descending
  */
 exports.getLogByIds = async (ids, sortType) => {
     return Log.find({
@@ -62,7 +62,7 @@ exports.getLogByIds = async (ids, sortType) => {
  * Make record with specified pattern (<item name>|<old value>|<new value>) separated by ','
  * @param {Object} oldPrj must be stringified in process
  * @param {Object} newPrj must be stringified in process
- * @returns {string} empty string or record string with specified pattern as bove introduced
+ * @returns {string} empty string or record string with specified pattern as above introduced
  */
 exports.makeRecord = (oldPrj, newPrj, item = project_item) => {
     const recordArr = []

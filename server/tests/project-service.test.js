@@ -1,4 +1,4 @@
-const projectServie = require('../service/project-service')
+const projectService = require('../service/project-service')
 const logService = require('../service/log-service')
 const userService = require('../service/user-service')
 const Project = require('../models/Project')
@@ -10,7 +10,7 @@ const action_type = {
     DELETE: "DELETE"
 }
 
-// global varialbe, we only test project service only
+// global variable, we only test project service only
 let userIDs = []
 let users = []
 let operator = {}
@@ -44,7 +44,7 @@ describe('test project service', () => {
         test('test add project', async () => {
             const project = testUtils.randomPrj(userIDs)
 
-            const log = await projectServie.addProject(operator, project)
+            const log = await projectService.addProject(operator, project)
 
             const checkPrj = await Project.findOne({ project_code: project.project_code })
             const checkLog = {
@@ -65,7 +65,7 @@ describe('test project service', () => {
 
     test('test get project list', async () => {
         const projects = await Project.find()
-        const projectsList = await projectServie.getProjectList()
+        const projectsList = await projectService.getProjectList()
         expect(projectsList.length).toBe(projects.length)
 
         // check project_code ascending
@@ -78,7 +78,7 @@ describe('test project service', () => {
         const oldPrj = testUtils.randomArr(await Project.find())
         const updatePrj = testUtils.randomPrj(userIDs)
 
-        const log = await projectServie.updateProject(oldPrj.id, operator, updatePrj)
+        const log = await projectService.updateProject(oldPrj.id, operator, updatePrj)
 
         const record = await logService.makeRecord(oldPrj, updatePrj)
         const checkLog = {
@@ -94,14 +94,14 @@ describe('test project service', () => {
 
         // check if return null
         const fakeID = testUtils.randomObjectId()
-        const log2 = await projectServie.updateProject(fakeID, operator, updatePrj)
+        const log2 = await projectService.updateProject(fakeID, operator, updatePrj)
         expect(log2).toEqual(null)
     })
 
     test('test delete project by id', async () => {
         const project = testUtils.randomPrj(userIDs)
         const projectID = (await new Project(project).save()).id
-        const log = await projectServie.deleteProject(projectID, operator)
+        const log = await projectService.deleteProject(projectID, operator)
 
         // check if project deleted
         expect(await Project.findById(projectID)).toEqual(null)
@@ -120,7 +120,7 @@ describe('test project service', () => {
 
         // check if return null
         const fakeID = testUtils.randomObjectId()
-        const log2 = await projectServie.deleteProject(fakeID, operator)
+        const log2 = await projectService.deleteProject(fakeID, operator)
         expect(log2).toEqual(null)
     })
 
@@ -132,7 +132,7 @@ describe('test project service', () => {
             const projects = projectIDs.map(x => Object.assign({}, testUtils.randomPrj(userIDs), { _id: x }))
             await Project.insertMany(projects)
 
-            const logs = await projectServie.batchDeleteProject(projectIDs, operator)
+            const logs = await projectService.batchDeleteProject(projectIDs, operator)
 
             // to expect projects have been deleted
             const result = await Project.find({ _id: { $in: projectIDs } })
@@ -155,7 +155,7 @@ describe('test project service', () => {
 
         test('ids are invalid', async () => {
             const fakeIDs = Array.from({ length: 5 }, () => testUtils.randomObjectId())
-            const logs = await projectServie.batchDeleteProject(fakeIDs, operator)
+            const logs = await projectService.batchDeleteProject(fakeIDs, operator)
             expect(logs).toEqual(null)
         })
     })

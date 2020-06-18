@@ -30,7 +30,7 @@ exports.getNotification = async (id) => {
                 x.receiver == id
             )
 
-            // edage case
+            // edge case
             const operator = await User.findById(x.operator)
             const project = await Project.findById(x.project_id)
 

@@ -29,7 +29,6 @@ export default {
       this.approval = "TODO";
     }
   },
-  methods: {},
   data() {
     return {
       approval: this.value

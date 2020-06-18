@@ -6,7 +6,7 @@ module.exports = {
         return (val === undefined || val == null || val.length <= 0) ? true : false
     },
 
-    // @edu aysnc function will always return a promise
+    // @edu async function will always return a promise
     encrypt: async (data, saltRounds = 10) => {
         const salt = await bcrypt.genSalt(saltRounds)
 

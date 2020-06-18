@@ -121,7 +121,7 @@ router.delete('/deleteUsers', passport.authenticate('jwt', { session: false }), 
 /**
  * Delete user
  * @router DELETE api/user/{userID}
- * @edu Dynamic api should be on bottom, otherwise will get erro
+ * @edu Dynamic api should be on bottom, otherwise will get error
  */
 router.delete('/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
     userService.deleteUser(req.params.id).then(user => {

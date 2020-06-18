@@ -7,10 +7,10 @@ const SidebarKey = 'sidebar'
  * Get online avatar by specific email
  * @param {string} email 
  * @param {Object} options refer gravatar website https://en.gravatar.com/site/implement/images/
- * @param {boolean} protocal true: 'https://' false: 'http://'
+ * @param {boolean} protocol true: 'https://' false: 'http://'
  * @returns {string} avatar online address
  */
-export function getAvatar(email, options = null, protocal = true) {
+export function getAvatar(email, options = null, protocol = true) {
     if (!options) {
         options = {
             s: '200',
@@ -18,7 +18,7 @@ export function getAvatar(email, options = null, protocal = true) {
             d: 'mp'
         }
     }
-    return gravatar.url(email, options, protocal)
+    return gravatar.url(email, options, protocol)
 }
 
 /**
@@ -39,7 +39,7 @@ export function setSidebarStatus(status) {
 }
 
 /**
- * Recuce array group by a specific filed
+ * Reduce array group by a specific filed
  * [{name:"samtech",skill:"js"},{name:"samtech",skill:"shell"},{name:"jctech",skill:"ps"}]
  * => {samtech:[{name:"samtech",skill:"js"},{name:"samtech",skill:"shell"}],jctech:[{name:"jctech",skill:"ps"}]}
  * @param {Object[]} arr 
@@ -49,7 +49,7 @@ export function groupby(arr, key) {
     return arr.reduce((rv, x) => {
 
         /*
-         * @edu if return object has no key create key then vaule = [] then push item, if hash key push item directory
+         * @edu if return object has no key create key then value = [] then push item, if hash key push item directory
          * sam as https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce
          */
         (rv[x[key]] = rv[x[key]] || []).push(x)
@@ -81,7 +81,7 @@ export function validateTime(val) {
 }
 
 /**
- * if val is date return formatted date with specific delitemr, e.g. 2020-04-01
+ * if val is date return formatted date with specific delimiter, e.g. 2020-04-01
  * if val is a number return xx%, only keep 2 digits
  * otherwise val keep same
  * @param {*} val 

@@ -247,7 +247,7 @@ paths:
       parameters:
         - name: projectId
           in: path
-          description: ID of the prject
+          description: ID of the project
           required: true
           schema:
             type: integer
@@ -334,7 +334,7 @@ paths:
           required: true
           description: |
             Default is descending,
-            1: asending, -1: descending
+            1: ascending, -1: descending
           schema:
             type: integer
             enum: [1, -1]
@@ -440,7 +440,7 @@ paths:
       tags:
         - notification
       summary: Update all read_status or delete_status by receiver objectIds
-      operationId: updateAllAlersByIds
+      operationId: updateAllAlertsByIds
       parameters:
         - name: read_status
           in: query
@@ -566,12 +566,12 @@ components:
           $ref: "#/components/schemas/User"
         operator_name:
           type: string
-          description: for edge case (operator delelted) use only
+          description: for edge case (operator deleted) use only
         project_id:
           $ref: "#/components/schemas/Project"
         project_code:
           type: string
-          description: for edge case (project delelted) use only
+          description: for edge case (project deleted) use only
         action_type:
           $ref: "#/components/schemas/Action_Type"
         action_time:
@@ -580,8 +580,8 @@ components:
         record:
           type: string
           description: |
-            compare all project columns, and concat each other, delimiter "|"
-            itemname,previous data, current data|...
+            compare all project columns, and concatenate each other, delimiter "|"
+            item name,previous data, current data|...
         receivers:
           type: array
           items:
@@ -632,7 +632,7 @@ components:
 
   securitySchemes:
     bearerAuth: # arbitrary name for the security scheme
-      description: Return full user infor encrypted as token after successful login
+      description: Return full user info encrypted as token after successful login
       type: http
       scheme: bearer
       bearerFormat: JWT # optional, arbitrary value for documentation purposes

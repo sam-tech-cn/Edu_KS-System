@@ -93,7 +93,7 @@ describe('test user service', () => {
 
     test('test find all users order by name ascending', async () => {
 
-        // the response list shouble be order as expect
+        // the response list should be order as expect
         const users = (await userService.getUserList()).map(x => x.name)
         const checkUsers = (await User.find()).map(x => x.name)
         expect(users.length).toBe(checkUsers.length)
@@ -128,8 +128,8 @@ describe('test user service', () => {
             email: 'whatever',
             admin: 'false'
         }
-        const udpateUser2 = await userService.updateUser(user2.id, userNoPass)
-        expect(JSON.parse(JSON.stringify(udpateUser2)).password).toEqual(JSON.parse(JSON.stringify(user2)).password)
+        const updateUser2 = await userService.updateUser(user2.id, userNoPass)
+        expect(JSON.parse(JSON.stringify(updateUser2)).password).toEqual(JSON.parse(JSON.stringify(user2)).password)
     })
 
     test('test get receivers, except operator', async () => {

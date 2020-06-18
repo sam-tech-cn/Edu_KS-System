@@ -20,7 +20,7 @@
           </div>
 
           <div class="alert-container">
-            <!-- aliert items we grouped by project code here and only show the lastest modification -->
+            <!-- we grouped alert items by project code here and only show the lastest modification -->
             <div v-if="notifications.length>0">
               <alert-item
                 @refresh="refresh"

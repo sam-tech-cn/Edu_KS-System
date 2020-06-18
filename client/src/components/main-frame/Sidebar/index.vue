@@ -38,8 +38,7 @@ export default {
   },
   data: function() {
     return {};
-  },
-  methods: {}
+  }
 };
 </script>
 <style lang="scss" scoped>

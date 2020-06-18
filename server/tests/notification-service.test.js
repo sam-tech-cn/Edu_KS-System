@@ -93,8 +93,8 @@ describe('test notification service', () => {
         test('test update all false read status to true', async () => {
             // set all read status to false
             await Log.updateMany({ receiver: receiver_id, read_status: true }, { $set: { 'receivers.$.read_status': false } })
-            const assymeResult = await Log.find({ receivers: { $elemMatch: { receiver: receiver_id, read_status: true } } })
-            expect(assymeResult).toEqual([])
+            const assumeResult = await Log.find({ receivers: { $elemMatch: { receiver: receiver_id, read_status: true } } })
+            expect(assumeResult).toEqual([])
 
             const updateFiled = {
                 read_status: true
@@ -107,8 +107,8 @@ describe('test notification service', () => {
         test('test update all false delete status to true', async () => {
             // set all delete status to false
             await Log.updateMany({ receiver: receiver_id, delete_status: true }, { $set: { 'receivers.$.delete_status': false } })
-            const assymeResult = await Log.find({ receivers: { $elemMatch: { receiver: receiver_id, delete_status: true } } })
-            expect(assymeResult).toEqual([])
+            const assumeResult = await Log.find({ receivers: { $elemMatch: { receiver: receiver_id, delete_status: true } } })
+            expect(assumeResult).toEqual([])
 
             const updateFiled = {
                 delete_status: true

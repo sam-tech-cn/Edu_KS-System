@@ -33,7 +33,7 @@ const getters = {
 const mutations = {
     [SET_USERINFO]: (state, user) => {
 
-        // the server side return "_id" via mongo, we ommit password here
+        // the server side return "_id" via mongo, we omit password here
         const { _id, name, email, admin } = user
         state.user = { _id, name, email, admin }
         state.avatar = getAvatar(user.email)

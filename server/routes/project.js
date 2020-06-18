@@ -8,7 +8,7 @@ const logService = require('../service/log-service')
 /**
  * Add a new project also update log
  * @route POST api/project
- * @edu asyn The keyword await makes JavaScript wait until that promise settles and returns its result. 
+ * @edu async The keyword await makes JavaScript wait until that promise settles and returns its result. 
  */
 router.post('/', passport.authenticate('jwt', { session: false }), async (req, res) => {
   try {
