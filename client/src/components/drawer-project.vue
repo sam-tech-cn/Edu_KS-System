@@ -409,11 +409,10 @@ export default {
 }
 
 .details-content {
-  // border: 1px solid tomato;
   height: calc(100vh - 100px);
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 2px;
+  padding: 10px 2px 0px;
 }
 
 .el-form {
@@ -436,6 +435,7 @@ export default {
     .el-select {
       width: 100%;
     }
+    margin-bottom: 5px;
   }
   .project-code {
     p {
@@ -444,6 +444,7 @@ export default {
     .el-input {
       width: 100%;
     }
+    margin-bottom: 0px;
   }
 
   .project-card {

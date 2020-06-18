@@ -57,7 +57,7 @@
       <el-input class="search" size="mini" placeholder="Type to search" v-model="search">
         <i slot="prefix" class="el-input__icon el-icon-search"></i>
       </el-input>
-      <i class="el-icon-refresh-right reset-icon"></i>
+      <i style="cursor: pointer" class="el-icon-refresh-right reset-icon" @click="resetTable"></i>
     </div>
     <div class="project-content">
       <el-table
@@ -300,6 +300,9 @@ export default {
           logs: []
         };
       });
+    },
+    resetTable: function() {
+      this.search = ""
     }
   }
 };

@@ -243,7 +243,7 @@ export default {
             displayType: "alert",
             activeName: "logs",
             logs: res.data,
-            readonly: true
+            readOnly: true
           };
         });
       }
