@@ -1,7 +1,7 @@
 # Edu_KS-System
 ## Introduction
 
-I wrote this project from 0 to 1, this is a `Full Stack` plus `DevOps` project. I have marked some tips by @edu, you can search it globally.
+I wrote this project from scratch, this is a `Full Stack` plus `DevOps` project. I have marked some tips by @edu, you can search it globally.
 
 ## What can you learn from this project?
 
@@ -13,7 +13,7 @@ I wrote this project from 0 to 1, this is a `Full Stack` plus `DevOps` project. 
 
 - API
 
-    You can use online editor https://editor.swagger.io/ to refer the API file which is based on `OpenAPI 3.0` from `apidoc` folder.
+    You can use online editor https://editor.swagger.io/ to refer to the API file which is based on `OpenAPI 3.0` from `apidoc` folder.
 
     If you're using vscode, the `swagger viewer` extension is recommended.
 
@@ -34,6 +34,7 @@ I wrote this project from 0 to 1, this is a `Full Stack` plus `DevOps` project. 
 - Vue 
     - Vuex
     - Vue Router
+    - Vue CLI
 - Axios
 - Element-UI
 
@@ -52,7 +53,7 @@ I wrote this project from 0 to 1, this is a `Full Stack` plus `DevOps` project. 
 
 ## How to start the project
 
-- Assume you have installed docker and docker-compose
+- Assuming you have already installed docker and docker-compose
 
 ```bash
 # under the project folder
@@ -67,11 +68,29 @@ docker ps
 # docker-compose stop
 ```
 
-- go to http://localhost:9999 via the browser
+- Go to http://localhost:9999 via the browser
 
-- initial login data
+- Initial login data
 
     ```
     username: admin password: admin (admin)
     username: developer password: developer (normal)
     ```
+
+## A glimpse of the project
+
+- Register & Login
+
+![](https://github.com/sam-tech-cn/Edu_KS-System/blob/readme/readme/ks-entry.gif?raw=true)
+
+- Navbar & Sidebar
+
+![](https://github.com/sam-tech-cn/Edu_KS-System/blob/readme/readme/ks-menu.gif?raw=true)
+
+- Notifications
+
+![](https://github.com/sam-tech-cn/Edu_KS-System/blob/readme/readme/ks-notifications.gif?raw=true)
+
+- Menu contents
+
+![](https://github.com/sam-tech-cn/Edu_KS-System/blob/readme/readme/ks-contents.gif?raw=true)
